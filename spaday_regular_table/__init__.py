@@ -1,1 +1,44 @@
+from pathlib import Path
+from typing import Any
+
+from spaday import ComponentPackage
+from spaday.component import Child
+
+from .components import SpadayRegularTable
+
 __version__ = "0.1.0"
+
+package = ComponentPackage(
+    name="regular-table",
+    assets_dir=Path(__file__).parent / "extension",
+    assets=(("css", "css/material.css"), ("js", "cdn/index.js")),
+)
+
+
+class RegularTable(SpadayRegularTable):
+    """Python-friendly constructor for the viewport-virtualized table."""
+
+    def __init__(
+        self,
+        *children: Child,
+        key: str | None = None,
+        columns: Any = None,
+        rows: Any = None,
+        virtual_mode: str | None = None,
+        row_header: str | None = None,
+        row_height: float | None = None,
+        **props: Any,
+    ) -> None:
+        super().__init__(
+            *children,
+            key=key,
+            columns=columns,
+            rows=rows,
+            virtualMode=virtual_mode,
+            rowHeader=row_header,
+            rowHeight=row_height,
+            **props,
+        )
+
+
+__all__ = ["RegularTable", "package"]
