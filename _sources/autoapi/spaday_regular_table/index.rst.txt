@@ -1,0 +1,21 @@
+spaday_regular_table
+====================
+
+.. py:module:: spaday_regular_table
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   spaday_regular_table.__version__
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :value: '0.1.0'
+
+
