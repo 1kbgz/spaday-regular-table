@@ -29,7 +29,12 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 
-dependencies = []
+dependencies = [
+    "spaday>=0.3.0",
+]
+
+[project.entry-points."spaday.component_packages"]
+regular-table = "spaday_regular_table:package"
 
 [project.optional-dependencies]
 develop = [
@@ -164,6 +169,10 @@ section-order = [
 [tool.yardang]
 title = "spaday-regular-table"
 root = "README.md"
-pages = []
-use-autoapi = true
-
+pages = [
+    "docs/src/tutorial.md",
+    "docs/src/how-to.md",
+    "docs/src/reference.md",
+    "docs/src/explanation.md",
+]
+use-autoapi = false

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "modules": [
+    {
+      "path": "src/ts/index.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RegularTable",
+          "customElement": true,
+          "tagName": "spaday-regular-table",
+          "summary": "Viewport-virtualized table over serializable record rows.",
+          "attributes": [
+            { "name": "columns", "type": { "text": "unknown" }, "description": "Column keys or {key, label} definitions." },
+            { "name": "rows", "type": { "text": "unknown" }, "description": "Record rows held in the browser and sliced per viewport." },
+            { "name": "virtualMode", "type": { "text": "'both' | 'horizontal' | 'vertical' | 'none'" }, "default": "'both'" },
+            { "name": "rowHeader", "type": { "text": "string" }, "description": "Optional row field rendered as a sticky row header." },
+            { "name": "rowHeight", "type": { "text": "number" }, "description": "Optional fixed row height in pixels." }
+          ],
+          "events": [
+            { "name": "cell-click", "type": { "text": "CustomEvent" }, "description": "Clicked cell metadata and source row." },
+            { "name": "table-draw", "type": { "text": "CustomEvent" }, "description": "Fires after each viewport draw so visible cells can be decorated." }
+          ],
+          "members": [
+            { "kind": "method", "name": "updateRow", "description": "Merge fields into one row and redraw the viewport." },
+            { "kind": "method", "name": "insertRow", "description": "Insert one row at a virtual index and redraw the viewport." },
+            { "kind": "method", "name": "removeRow", "description": "Remove one row at a virtual index and redraw the viewport." },
+            { "kind": "method", "name": "getMeta", "description": "Resolve a rendered cell to virtual coordinates and its source row." }
+          ],
+          "slots": []
+        }
+      ]
+    }
+  ]
+}

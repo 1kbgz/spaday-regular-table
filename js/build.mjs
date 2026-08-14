@@ -1,5 +1,4 @@
 import { bundle } from "./tools/bundle.mjs";
-import { bundle_css } from "./tools/css.mjs";
 import { node_modules_external } from "./tools/externals.mjs";
 
 import fs from "fs";
@@ -18,22 +17,31 @@ const BUNDLES = [
 ];
 
 async function build() {
-  // Bundle css
-  await bundle_css();
+  fs.rmSync("dist", { recursive: true, force: true });
+  fs.rmSync("../spaday_regular_table/extension", {
+    recursive: true,
+    force: true,
+  });
 
   // Copy HTML
-  cpy("src/html/*", "dist/");
+  await cpy("src/html/*", "dist/");
 
   // Copy images
   fs.mkdirSync("dist/img", { recursive: true });
-  cpy("src/img/*", "dist/img");
+  await cpy("src/img/*", "dist/img");
+
+  await cpy("node_modules/regular-table/dist/css/material.css", "dist/css", {
+    flat: true,
+  });
 
   await Promise.all(BUNDLES.map(bundle)).catch(() => process.exit(1));
 
   // Copy servable assets to python extension (exclude esm/)
   fs.mkdirSync("../spaday_regular_table/extension", { recursive: true });
-  cpy("dist/**/*", "../spaday_regular_table/extension", {
-    filter: (file) => !file.relativePath.startsWith("esm"),
+  await cpy("dist/**/*", "../spaday_regular_table/extension", {
+    filter: (file) =>
+      !file.relativePath.startsWith("esm/") &&
+      !file.relativePath.startsWith("dist/esm/"),
   });
 }
 
