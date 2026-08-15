@@ -29,6 +29,12 @@ def _generated_ast(source: str) -> str:
     return ast.dump(Normalize().visit(ast.parse(source)))
 
 
+def test_generated_ast_normalizes_optional_annotations():
+    legacy = "from typing import Optional\nvalue: Optional[str]"
+    modern = "from typing import Optional\nvalue: str | None"
+    assert _generated_ast(legacy) == _generated_ast(modern)
+
+
 def test_regular_table_serializes_rich_columns_row_patch_and_event():
     node = (
         RegularTable(
