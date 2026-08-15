@@ -19,6 +19,8 @@ class SpadayRegularTable(Component):
         key: str | None = None,
         columns: Any = None,
         rows: Any = None,
+        rowPatch: Any = None,
+        streamUrl: str | None = None,
         virtualMode: Literal["both", "horizontal", "vertical", "none"] | None = None,
         rowHeader: str | None = None,
         rowHeight: float | None = None,
@@ -30,6 +32,8 @@ class SpadayRegularTable(Component):
             props={
                 "columns": columns,
                 "rows": rows,
+                "rowPatch": rowPatch,
+                "streamUrl": streamUrl,
                 "virtualMode": virtualMode,
                 "rowHeader": rowHeader,
                 "rowHeight": rowHeight,

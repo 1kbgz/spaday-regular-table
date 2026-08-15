@@ -11,14 +11,18 @@
           "tagName": "spaday-regular-table",
           "summary": "Viewport-virtualized table over serializable record rows.",
           "attributes": [
-            { "name": "columns", "type": { "text": "unknown" }, "description": "Column keys or {key, label} definitions." },
+            { "name": "columns", "type": { "text": "unknown" }, "description": "Column keys or {key, label, cell} definitions." },
             { "name": "rows", "type": { "text": "unknown" }, "description": "Record rows held in the browser and sliced per viewport." },
+            { "name": "rowPatch", "type": { "text": "unknown" }, "description": "Serializable batch of update, insert, and remove row operations." },
+            { "name": "streamUrl", "type": { "text": "string" }, "description": "Optional SSE endpoint whose messages are row patches." },
             { "name": "virtualMode", "type": { "text": "'both' | 'horizontal' | 'vertical' | 'none'" }, "default": "'both'" },
             { "name": "rowHeader", "type": { "text": "string" }, "description": "Optional row field rendered as a sticky row header." },
             { "name": "rowHeight", "type": { "text": "number" }, "description": "Optional fixed row height in pixels." }
           ],
           "events": [
             { "name": "cell-click", "type": { "text": "CustomEvent" }, "description": "Clicked cell metadata and source row." },
+            { "name": "row-patch", "type": { "text": "CustomEvent" }, "description": "A row patch was applied." },
+            { "name": "row-stream-error", "type": { "text": "CustomEvent" }, "description": "An SSE message was not a valid row patch." },
             { "name": "table-draw", "type": { "text": "CustomEvent" }, "description": "Fires after each viewport draw so visible cells can be decorated." }
           ],
           "members": [

@@ -1,7 +1,7 @@
 import ast
 from pathlib import Path
 
-from spaday import NamedJs, generate
+from spaday import CallEndpoint, event_value, generate
 from spaday.bootstrap import bootstrap
 
 from spaday_regular_table import RegularTable, package
@@ -29,15 +29,23 @@ def _generated_ast(source: str) -> str:
     return ast.dump(Normalize().visit(ast.parse(source)))
 
 
-def test_regular_table_serializes_virtualized_records_and_event():
+def test_regular_table_serializes_rich_columns_row_patch_and_event():
     node = (
-        RegularTable(columns=["id", {"key": "price", "label": "Last"}], rows=[{"id": 1, "price": 3.5}], row_header="id")
-        .on("cell-click", NamedJs("inspectCell"))
+        RegularTable(
+            columns=["id", {"key": "price", "label": "Last", "cell": {"format": "number", "digits": 2}}],
+            rows=[{"id": 1, "price": 3.5}],
+            row_patch={"revision": 1, "operations": [{"type": "update", "index": 0, "changes": {"price": 4.5}}]},
+            stream_url="/api/table/stream",
+            row_header="id",
+        )
+        .on("price-click", CallEndpoint("POST", "/api/click", event_value()))
         .to_node()
     )
     assert node["tag"] == "spaday-regular-table"
     assert node["props"]["rows"]["List"][0]["Map"]["id"] == {"Int": 1}
-    assert node["events"]["cell-click"] == {"kind": "js", "handler": "inspectCell"}
+    assert node["props"]["rowPatch"]["Map"]["operations"]["List"][0]["Map"]["type"] == {"Str": "update"}
+    assert node["props"]["streamUrl"] == {"Str": "/api/table/stream"}
+    assert node["events"]["price-click"]["kind"] == "call"
 
 
 def test_package_drives_bootstrap_assets():

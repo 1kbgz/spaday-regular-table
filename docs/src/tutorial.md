@@ -50,4 +50,8 @@ Open `http://127.0.0.1:8000`. You should see the first rows immediately. Drag th
 bottom; rows around 100,000 appear without creating 100,000 DOM rows.
 
 You now have a viewport-virtualized table backed by ordinary serializable records. Continue with
-[Add rich action cells and hot row updates](how-to.md) to customize visible cells.
+[Add rich action cells and hot row updates](how-to.md) to configure buttons and granular server pushes
+without writing JavaScript.
+
+For a full-width market blotter with streamed rows, rich cells, and server-authoritative actions, run
+the Python-only [complete table example](../../spaday_regular_table/example.py).
