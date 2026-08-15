@@ -248,10 +248,14 @@ can see only a small viewport.</p>
 viewport and reuses a bounded set of cells while the user scrolls. The spaday wrapper keeps records in a
 browser-side array and copies only the requested row and column slice into each response. A 100,000-row
 dataset therefore does not imply 100,000 DOM rows.</p>
-<p>Rich cells follow the same constraint. <code class="docutils literal notranslate"><span class="pre">table-draw</span></code> runs after the viewport is rendered, allowing an
-application to decorate only visible cells. When scrolling reuses those cells, the handler runs again.
-This is why rich renderers should be small, deterministic browser functions rather than component trees
-for every offscreen row.</p>
+<p>Rich cells follow the same constraint. Serializable <code class="docutils literal notranslate"><span class="pre">cell</span></code> descriptors are interpreted by the wrapper
+after the viewport is rendered. When scrolling reuses cells, it recreates only their small visible
+content. Python therefore controls the element tag, formatting, classes, attributes, and spaday action
+attached to the table without shipping an application callback script.</p>
+<p>Granular row changes use the same adapter boundary. Python sends a small <code class="docutils literal notranslate"><span class="pre">rowPatch</span></code> operation batch
+through a bound action result or an SSE <code class="docutils literal notranslate"><span class="pre">stream_url</span></code>; the wrapper translates it to regular-table’s
+imperative row methods. spaday remains responsible for serializable UI configuration, while the peer
+package owns library-specific DOM, streaming, and redraw mechanics.</p>
 <p>The wrapper deliberately omits pivoting, sorting, and aggregation. Perspective is a better fit when the
 browser needs an analytical engine. Regular Table is the smaller choice when application code already
 owns row order and needs fast display, direct record mutation, and custom visible-cell behavior.</p>

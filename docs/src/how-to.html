@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -234,55 +234,89 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="how-to-add-rich-action-cells-and-hot-row-updates">
 <h1>How to add rich action cells and hot row updates<a class="headerlink" href="#how-to-add-rich-action-cells-and-hot-row-updates" title="Link to this heading">¶</a></h1>
-<p>This guide shows how to place browser buttons in visible cells and update one row without replacing the
-full dataset.</p>
-<p>Add an action column and handle <code class="docutils literal notranslate"><span class="pre">table-draw</span></code> with a named JavaScript handler:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedJs</span>
+<p>Use a <code class="docutils literal notranslate"><span class="pre">cell</span></code> descriptor when a visible value should be an interactive element. This creates real
+buttons inside the virtualized viewport; scrolling reuses and rerenders them automatically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallEndpoint</span><span class="p">,</span> <span class="n">event_value</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">spaday_regular_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegularTable</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">RegularTable</span><span class="p">(</span>
-    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Symbol&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol-button&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol-click&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Last&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;digits&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
+    <span class="p">],</span>
     <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span>
     <span class="n">style</span><span class="o">=</span><span class="s2">&quot;height: 32rem&quot;</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;table-draw&quot;</span><span class="p">,</span> <span class="n">NamedJs</span><span class="p">(</span><span class="s2">&quot;render-actions&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Register the handler in <code class="docutils literal notranslate"><span class="pre">table-actions.js</span></code>:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">registerHandler</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;/js/dist/esm/index.js&quot;</span><span class="p">;</span>
-
-<span class="nx">registerHandler</span><span class="p">(</span><span class="s2">&quot;render-actions&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">_event</span><span class="p">,</span><span class="w"> </span><span class="nx">table</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">cell</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">table</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s2">&quot;tbody td&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">meta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">table</span><span class="p">.</span><span class="nx">getMeta</span><span class="p">(</span><span class="nx">cell</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">meta</span><span class="o">?</span><span class="p">.</span><span class="nx">column</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s2">&quot;action&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">button</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="nx">button</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Bump price&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">button</span><span class="p">.</span><span class="nx">onclick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nx">table</span><span class="p">.</span><span class="nx">updateRow</span><span class="p">(</span><span class="nx">meta</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="nx">meta</span><span class="p">.</span><span class="nx">row</span><span class="p">.</span><span class="nx">price</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">});</span>
-<span class="w">    </span><span class="p">};</span>
-<span class="w">    </span><span class="nx">cell</span><span class="p">.</span><span class="nx">replaceChildren</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-</div>
-<p>Expose that module through the host application and load it with <code class="docutils literal notranslate"><span class="pre">scripts</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">serve</span><span class="p">(</span>
-    <span class="n">table</span><span class="p">,</span>
-    <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;regular-table&quot;</span><span class="p">],</span>
-    <span class="n">scripts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;/static/table-actions.js&quot;</span><span class="p">],</span>
+<span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+    <span class="s2">&quot;symbol-click&quot;</span><span class="p">,</span>
+    <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;/api/click&quot;</span><span class="p">,</span> <span class="n">event_value</span><span class="p">()),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>The draw handler runs again after scrolling and redraws, so buttons are attached only to reused visible
-cells. Use <code class="docutils literal notranslate"><span class="pre">insertRow(index,</span> <span class="pre">row)</span></code> and <code class="docutils literal notranslate"><span class="pre">removeRow(index)</span></code> for other single-record changes.</p>
-<p>Refer to the <a class="reference internal" href="reference.html"><span class="std std-doc">API reference</span></a> for return values and event detail.</p>
+<p><code class="docutils literal notranslate"><span class="pre">event_value()</span></code> sends the <code class="docutils literal notranslate"><span class="pre">symbol-click</span></code> detail, including <code class="docutils literal notranslate"><span class="pre">column</span></code>, <code class="docutils literal notranslate"><span class="pre">value</span></code>, virtual <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>, and
+the source <code class="docutils literal notranslate"><span class="pre">row</span></code>. The endpoint can act on the exact record without a browser callback.</p>
+<section id="apply-a-patch-returned-by-an-endpoint">
+<h2>Apply a patch returned by an endpoint<a class="headerlink" href="#apply-a-patch-returned-by-an-endpoint" title="Link to this heading">¶</a></h2>
+<p>Have the endpoint return a small revisioned operation batch:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Price updated&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;patch&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;revision&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;changes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">103.25</span><span class="p">}},</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Capture the response in normal spaday state and bind its patch to the table:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;rowPatch&quot;</span><span class="p">,</span> <span class="s2">&quot;action_result.body.patch&quot;</span><span class="p">)</span>
+
+<span class="n">button</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+    <span class="s2">&quot;click&quot;</span><span class="p">,</span>
+    <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;/api/update&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="s2">&quot;action_result&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="stream-row-patches-from-python">
+<h2>Stream row patches from Python<a class="headerlink" href="#stream-row-patches-from-python" title="Link to this heading">¶</a></h2>
+<p>Set <code class="docutils literal notranslate"><span class="pre">stream_url</span></code> to a Server-Sent Events endpoint:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">RegularTable</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">stream_url</span><span class="o">=</span><span class="s2">&quot;/api/table/stream&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each <code class="docutils literal notranslate"><span class="pre">data</span></code> message is one JSON patch. A streamed insert-and-trim operation looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">patch</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;revision&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;insert&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;row&quot;</span><span class="p">:</span> <span class="n">new_row</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">100_000</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+<span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>The browser applies each batch to its existing record array and redraws one viewport. Use a new
+<code class="docutils literal notranslate"><span class="pre">revision</span></code> for every patch so reconnects or duplicate endpoint/stream delivery cannot apply an operation
+twice.</p>
+<p>See the <a class="reference download internal" download="" href="../../_downloads/7a3d32778b4051222fd87d8a109d6352/example.py"><span class="xref download myst">complete example</span></a> for an SSE broadcaster, toolbar REST
+actions, click logging, styles, and a 100,000-row dataset—all authored in Python.</p>
+</section>
 </section>
 
         </article>
@@ -328,8 +362,28 @@ cells. Use <code class="docutils literal notranslate"><span class="pre">insertRo
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">How to add rich action cells and hot row updates</a><ul>
+<li><a class="reference internal" href="#apply-a-patch-returned-by-an-endpoint">Apply a patch returned by an endpoint</a></li>
+<li><a class="reference internal" href="#stream-row-patches-from-python">Stream row patches from Python</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
