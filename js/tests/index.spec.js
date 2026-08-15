@@ -148,3 +148,24 @@ test("renders rich cells and applies Python-shaped row patches", async ({
       .evaluate((table) => table.rows[0].symbol),
   ).toBe("STREAMED");
 });
+
+test("runs the Python table with streaming and row actions", async ({
+  page,
+}) => {
+  await page.goto("http://127.0.0.1:8014");
+  const table = page.locator("spaday-regular-table");
+  await expect(table.locator("tbody button").first()).toBeVisible({
+    timeout: 15_000,
+  });
+  await expect(page.locator("#stream-status")).toHaveText(
+    "Applied server row patch",
+    { timeout: 6_000 },
+  );
+
+  await table.locator("tbody button").first().click();
+  await expect(page.locator(".action-status")).toContainText(
+    "Server received click",
+  );
+  await page.getByRole("button", { name: "Insert row" }).click();
+  await expect(page.locator(".action-status")).toContainText("Server inserted");
+});
