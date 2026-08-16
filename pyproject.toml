@@ -48,14 +48,17 @@ develop = [
     "codespell",
     "hatch-js",
     "hatchling",
+    "httpx",
     "mdformat",
     "mdformat-tables>=1",
     "pytest",
     "pytest-cov",
     "ruff",
+    "starlette",
     "twine",
     "ty",
     "uv",
+    "uvicorn",
     "wheel",
 ]
 
