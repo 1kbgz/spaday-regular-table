@@ -8,12 +8,6 @@ from .components import SpadayRegularTable
 
 __version__ = "0.1.0"
 
-package = ComponentPackage(
-    name="regular-table",
-    assets_dir=Path(__file__).parent / "extension",
-    assets=(("css", "css/material.css"), ("js", "cdn/index.js")),
-)
-
 
 class RegularTable(SpadayRegularTable):
     """Python-friendly constructor for the viewport-virtualized table."""
@@ -43,6 +37,14 @@ class RegularTable(SpadayRegularTable):
             rowHeight=row_height,
             **props,
         )
+
+
+package = ComponentPackage(
+    name="regular-table",
+    assets_dir=Path(__file__).parent / "extension",
+    assets=(("css", "css/material.css"), ("js", "cdn/index.js")),
+    components=(RegularTable,),
+)
 
 
 __all__ = ["RegularTable", "package"]

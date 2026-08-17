@@ -56,6 +56,7 @@ def test_regular_table_serializes_rich_columns_row_patch_and_event():
 
 def test_package_drives_bootstrap_assets():
     html = bootstrap(packages=[package])
+    assert [(schema.tag, schema.class_name) for schema in package.catalog] == [("spaday-regular-table", "RegularTable")]
     assert 'href="/components/regular-table/css/material.css"' in html
     assert 'src="/components/regular-table/cdn/index.js"' in html
 

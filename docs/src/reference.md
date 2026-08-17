@@ -82,4 +82,5 @@ string. Other values are JSON-encoded for display.
 ## `package`
 
 `spaday_regular_table.package` is named `regular-table`. It serves the Material table CSS followed by
-the self-contained browser registration bundle.
+the self-contained browser registration bundle. Its `components` collection contains `RegularTable`;
+`catalog` returns the wrapper's property, event, and slot schema.
