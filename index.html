@@ -262,24 +262,24 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallEndpoint</span><span class="p">,</span> <span class="n">event_value</span><span class="p">,</span> <span class="n">serve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">spaday_regular_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegularTable</span>
 
-<span class="n">rows</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;SYM</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">i</span> <span class="o">/</span> <span class="mi">10</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">)]</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">"symbol"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"SYM</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="n">i</span> <span class="o">/</span> <span class="mi">10</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">)]</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">RegularTable</span><span class="p">(</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
-        <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+        <span class="s2">"id"</span><span class="p">,</span>
         <span class="p">{</span>
-            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Symbol&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol-button&quot;</span><span class="p">,</span> <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol-click&quot;</span><span class="p">},</span>
+            <span class="s2">"key"</span><span class="p">:</span> <span class="s2">"symbol"</span><span class="p">,</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Symbol"</span><span class="p">,</span>
+            <span class="s2">"cell"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"tag"</span><span class="p">:</span> <span class="s2">"button"</span><span class="p">,</span> <span class="s2">"class"</span><span class="p">:</span> <span class="s2">"symbol-button"</span><span class="p">,</span> <span class="s2">"event"</span><span class="p">:</span> <span class="s2">"symbol-click"</span><span class="p">},</span>
         <span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Last price&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;digits&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="s2">"price"</span><span class="p">,</span> <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Last price"</span><span class="p">,</span> <span class="s2">"cell"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"number"</span><span class="p">,</span> <span class="s2">"digits"</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
     <span class="p">],</span>
     <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span>
-    <span class="n">row_header</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;height: 32rem&quot;</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;symbol-click&quot;</span><span class="p">,</span> <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;/api/click&quot;</span><span class="p">,</span> <span class="n">event_value</span><span class="p">()))</span>
+    <span class="n">row_header</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">"height: 32rem"</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"symbol-click"</span><span class="p">,</span> <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">"POST"</span><span class="p">,</span> <span class="s2">"/api/click"</span><span class="p">,</span> <span class="n">event_value</span><span class="p">()))</span>
 
-<span class="n">serve</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;regular-table&quot;</span><span class="p">])</span>
+<span class="n">serve</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s2">"regular-table"</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Only cells requested for the current viewport are copied into <code class="docutils literal notranslate"><span class="pre">regular-table</span></code> and rendered. <code class="docutils literal notranslate"><span class="pre">rows</span></code>
@@ -295,7 +295,7 @@ browser methods remain available to integration authors, but applications need n
 </section>
 <section id="run-the-local-example">
 <h2>Run the local example<a class="headerlink" href="#run-the-local-example" title="Link to this heading">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[examples]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[examples]"</span>
 python<span class="w"> </span>-m<span class="w"> </span>spaday_regular_table.example
 </pre></div>
 </div>

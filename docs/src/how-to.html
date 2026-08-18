@@ -249,22 +249,22 @@ buttons inside the virtualized viewport; scrolling reuses and rerenders them aut
 <span class="n">table</span> <span class="o">=</span> <span class="n">RegularTable</span><span class="p">(</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Symbol&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol-button&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;symbol-click&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">},</span>
+            <span class="s2">"key"</span><span class="p">:</span> <span class="s2">"symbol"</span><span class="p">,</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Symbol"</span><span class="p">,</span>
+            <span class="s2">"cell"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"tag"</span><span class="p">:</span> <span class="s2">"button"</span><span class="p">,</span>
+                <span class="s2">"class"</span><span class="p">:</span> <span class="s2">"symbol-button"</span><span class="p">,</span>
+                <span class="s2">"event"</span><span class="p">:</span> <span class="s2">"symbol-click"</span><span class="p">,</span>
+                <span class="s2">"attributes"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"button"</span><span class="p">},</span>
             <span class="p">},</span>
         <span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Last&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;digits&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="s2">"price"</span><span class="p">,</span> <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"Last"</span><span class="p">,</span> <span class="s2">"cell"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"number"</span><span class="p">,</span> <span class="s2">"digits"</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
     <span class="p">],</span>
     <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span>
-    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;height: 32rem&quot;</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">"height: 32rem"</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
-    <span class="s2">&quot;symbol-click&quot;</span><span class="p">,</span>
-    <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;/api/click&quot;</span><span class="p">,</span> <span class="n">event_value</span><span class="p">()),</span>
+    <span class="s2">"symbol-click"</span><span class="p">,</span>
+    <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">"POST"</span><span class="p">,</span> <span class="s2">"/api/click"</span><span class="p">,</span> <span class="n">event_value</span><span class="p">()),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -274,22 +274,22 @@ the source <code class="docutils literal notranslate"><span class="pre">row</spa
 <h2>Apply a patch returned by an endpoint<a class="headerlink" href="#apply-a-patch-returned-by-an-endpoint" title="Link to this heading">¶</a></h2>
 <p>Have the endpoint return a small revisioned operation batch:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span>
-    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Price updated&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;patch&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;revision&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;changes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">103.25</span><span class="p">}},</span>
+    <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Price updated"</span><span class="p">,</span>
+    <span class="s2">"patch"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"revision"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"operations"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"update"</span><span class="p">,</span> <span class="s2">"index"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"changes"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"price"</span><span class="p">:</span> <span class="mf">103.25</span><span class="p">}},</span>
         <span class="p">],</span>
     <span class="p">},</span>
 <span class="p">})</span>
 </pre></div>
 </div>
 <p>Capture the response in normal spaday state and bind its patch to the table:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;rowPatch&quot;</span><span class="p">,</span> <span class="s2">&quot;action_result.body.patch&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">"rowPatch"</span><span class="p">,</span> <span class="s2">"action_result.body.patch"</span><span class="p">)</span>
 
 <span class="n">button</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
-    <span class="s2">&quot;click&quot;</span><span class="p">,</span>
-    <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;/api/update&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="s2">&quot;action_result&quot;</span><span class="p">),</span>
+    <span class="s2">"click"</span><span class="p">,</span>
+    <span class="n">CallEndpoint</span><span class="p">(</span><span class="s2">"POST"</span><span class="p">,</span> <span class="s2">"/api/update"</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="s2">"action_result"</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -297,18 +297,18 @@ the source <code class="docutils literal notranslate"><span class="pre">row</spa
 <section id="stream-row-patches-from-python">
 <h2>Stream row patches from Python<a class="headerlink" href="#stream-row-patches-from-python" title="Link to this heading">¶</a></h2>
 <p>Set <code class="docutils literal notranslate"><span class="pre">stream_url</span></code> to a Server-Sent Events endpoint:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">RegularTable</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">stream_url</span><span class="o">=</span><span class="s2">&quot;/api/table/stream&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">RegularTable</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">stream_url</span><span class="o">=</span><span class="s2">"/api/table/stream"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Each <code class="docutils literal notranslate"><span class="pre">data</span></code> message is one JSON patch. A streamed insert-and-trim operation looks like this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">patch</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;revision&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;insert&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;row&quot;</span><span class="p">:</span> <span class="n">new_row</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;remove&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">100_000</span><span class="p">},</span>
+    <span class="s2">"revision"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"operations"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"insert"</span><span class="p">,</span> <span class="s2">"index"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"row"</span><span class="p">:</span> <span class="n">new_row</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"remove"</span><span class="p">,</span> <span class="s2">"index"</span><span class="p">:</span> <span class="mi">100_000</span><span class="p">},</span>
     <span class="p">],</span>
 <span class="p">}</span>
-<span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<span class="k">yield</span> <span class="sa">f</span><span class="s2">"data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">"</span>
 </pre></div>
 </div>
 <p>The browser applies each batch to its existing record array and redraws one viewport. Use a new
