@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
+from spaday.catalog import ComponentSchema, PropertySchema
 from spaday.component import Child, Component
 
 __all__ = ["SpadayRegularTable"]
@@ -12,6 +13,30 @@ class SpadayRegularTable(Component):
     """Viewport-virtualized table over serializable record rows."""
 
     tag = "spaday-regular-table"
+    schema = ComponentSchema(
+        tag="spaday-regular-table",
+        class_name="SpadayRegularTable",
+        summary="Viewport-virtualized table over serializable record rows.",
+        props=(
+            PropertySchema(name="columns", kind="json", choices=(), default=None, description="Column keys or {key, label, cell} definitions."),
+            PropertySchema(
+                name="rows", kind="json", choices=(), default=None, description="Record rows held in the browser and sliced per viewport."
+            ),
+            PropertySchema(
+                name="rowPatch", kind="json", choices=(), default=None, description="Serializable batch of update, insert, and remove row operations."
+            ),
+            PropertySchema(
+                name="streamUrl", kind="string", choices=(), default=None, description="Optional SSE endpoint whose messages are row patches."
+            ),
+            PropertySchema(name="virtualMode", kind="enum", choices=("both", "horizontal", "vertical", "none"), default="both", description=None),
+            PropertySchema(
+                name="rowHeader", kind="string", choices=(), default=None, description="Optional row field rendered as a sticky row header."
+            ),
+            PropertySchema(name="rowHeight", kind="number", choices=(), default=None, description="Optional fixed row height in pixels."),
+        ),
+        events=("cell-click", "row-patch", "row-stream-error", "table-draw"),
+        slots=(),
+    )
 
     def __init__(
         self,
