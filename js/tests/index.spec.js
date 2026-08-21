@@ -169,3 +169,39 @@ test("runs the Python table with streaming and row actions", async ({
   await page.getByRole("button", { name: "Insert row" }).click();
   await expect(page.locator(".action-status")).toContainText("Server inserted");
 });
+
+test("the material theme follows the wa-dark page mode", async ({ page }) => {
+  await page.goto("/dist/index.html");
+  await page.evaluate(() => {
+    const table = document.createElement("spaday-regular-table");
+    table.style.cssText = "display:block;width:400px;height:200px";
+    table.columns = ["id"];
+    table.rows = [{ id: 1 }, { id: 2 }];
+    document.body.appendChild(table);
+  });
+  const th = page
+    .locator("spaday-regular-table thead tr:last-child th")
+    .first();
+  const inner = page.locator("spaday-regular-table table").first();
+  await expect(th).toBeVisible();
+  await expect(th).toHaveCSS("border-bottom-color", "rgb(221, 221, 221)"); // material's light #ddd
+  await expect(inner).toHaveCSS("color", "rgb(102, 102, 102)"); // #666
+
+  await page.evaluate(() => document.documentElement.classList.add("wa-dark"));
+  await expect(th).toHaveCSS("border-bottom-color", "rgb(51, 59, 69)"); // #333b45, the shell's dark border
+  await expect(inner).toHaveCSS("color", "rgb(154, 163, 173)"); // #9aa3ad, the shell's dark muted
+
+  // a wa-light island flips back
+  await page.evaluate(() => {
+    const island = document.createElement("div");
+    island.className = "wa-light";
+    island.appendChild(document.querySelector("spaday-regular-table"));
+    document.body.appendChild(island);
+  });
+  await expect(th).toHaveCSS("border-bottom-color", "rgb(221, 221, 221)");
+
+  await page.evaluate(() =>
+    document.documentElement.classList.remove("wa-dark"),
+  );
+  await expect(inner).toHaveCSS("color", "rgb(102, 102, 102)");
+});
