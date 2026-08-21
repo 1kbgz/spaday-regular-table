@@ -58,6 +58,8 @@ def test_package_drives_bootstrap_assets():
     html = bootstrap(packages=[package])
     assert [(schema.tag, schema.class_name) for schema in package.catalog] == [("spaday-regular-table", "RegularTable")]
     assert 'href="/components/regular-table/css/material.css"' in html
+    assert 'href="/components/regular-table/css/theme.css"' in html  # the mode-aware overrides, after material
+    assert html.index("css/material.css") < html.index("css/theme.css")
     assert 'src="/components/regular-table/cdn/index.js"' in html
 
 

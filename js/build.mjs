@@ -34,6 +34,9 @@ async function build() {
     flat: true,
   });
 
+  // The mode-aware color overrides (wa-dark / wa-light), loaded after material.css
+  await cpy("src/css/theme.css", "dist/css", { flat: true });
+
   await Promise.all(BUNDLES.map(bundle)).catch(() => process.exit(1));
 
   // Copy servable assets to python extension (exclude esm/)

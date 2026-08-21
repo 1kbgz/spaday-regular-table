@@ -1,0 +1,51 @@
+/* Mode-aware colors for regular-table's material theme, following spaday's page-mode
+ * convention: `wa-dark` on the root re-themes the table, `wa-light` flips a nested
+ * island back. Values defer to the spaday shell's --spa-* tokens where one fits, so an
+ * application that re-themes the shell carries the table with it; the fallbacks keep a
+ * standalone page coherent. Loaded after material.css — selectors match its rules so
+ * these win the cascade. */
+
+regular-table table {
+  color: var(--spa-muted, #666);
+}
+regular-table thead tr:last-child th {
+  border-bottom: 1px solid var(--spa-border, #ddd);
+}
+regular-table tr:hover td {
+  background: var(--spa-surface-2, #eee);
+}
+
+:where(.wa-dark) regular-table table {
+  color: var(--spa-muted, #9aa3ad);
+}
+:where(.wa-dark) regular-table thead tr:last-child th {
+  border-bottom: 1px solid var(--spa-border, #333b45);
+}
+:where(.wa-dark) regular-table tr:hover td {
+  background: var(--spa-surface-2, #1d232b);
+}
+:where(.wa-dark) regular-table tr:hover {
+  color: #dfe3e8;
+}
+:where(.wa-dark) regular-table:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+:where(.wa-dark) regular-table:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+:where(.wa-dark) regular-table::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+:where(.wa-light) regular-table table {
+  color: var(--spa-muted, #666);
+}
+:where(.wa-light) regular-table thead tr:last-child th {
+  border-bottom: 1px solid var(--spa-border, #ddd);
+}
+:where(.wa-light) regular-table tr:hover td {
+  background: var(--spa-surface-2, #eee);
+}
+:where(.wa-light) regular-table tr:hover {
+  color: #333;
+}

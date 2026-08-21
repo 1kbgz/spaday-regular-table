@@ -42,7 +42,7 @@ class RegularTable(SpadayRegularTable):
 package = ComponentPackage(
     name="regular-table",
     assets_dir=Path(__file__).parent / "extension",
-    assets=(("css", "css/material.css"), ("js", "cdn/index.js")),
+    assets=(("css", "css/material.css"), ("css", "css/theme.css"), ("js", "cdn/index.js")),
     components=(RegularTable,),
 )
 
