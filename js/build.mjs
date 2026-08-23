@@ -1,4 +1,5 @@
 import { bundle } from "./tools/bundle.mjs";
+import { bundle_css } from "./tools/css.mjs";
 import { node_modules_external } from "./tools/externals.mjs";
 
 import fs from "fs";
@@ -34,8 +35,8 @@ async function build() {
     flat: true,
   });
 
-  // The mode-aware color overrides (wa-dark / wa-light), loaded after material.css
-  await cpy("src/css/theme.css", "dist/css", { flat: true });
+  // Bundle css (incl. theme.css, the mode-aware wa-dark / wa-light overrides loaded after material.css)
+  await bundle_css("src/css");
 
   await Promise.all(BUNDLES.map(bundle)).catch(() => process.exit(1));
 
