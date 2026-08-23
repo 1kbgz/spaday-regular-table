@@ -24,19 +24,21 @@ async function build() {
     force: true,
   });
 
+  // Bundle css (incl. theme.css, the mode-aware wa-dark / wa-light overrides loaded after material.css)
+  await bundle_css("src/css");
+
   // Copy HTML
   await cpy("src/html/*", "dist/");
 
   // Copy images
-  fs.mkdirSync("dist/img", { recursive: true });
-  await cpy("src/img/*", "dist/img");
+  if (fs.existsSync("src/img")) {
+    fs.mkdirSync("dist/img", { recursive: true });
+    await cpy("src/img/*", "dist/img");
+  }
 
   await cpy("node_modules/regular-table/dist/css/material.css", "dist/css", {
     flat: true,
   });
-
-  // Bundle css (incl. theme.css, the mode-aware wa-dark / wa-light overrides loaded after material.css)
-  await bundle_css("src/css");
 
   await Promise.all(BUNDLES.map(bundle)).catch(() => process.exit(1));
 
@@ -49,4 +51,4 @@ async function build() {
   });
 }
 
-build();
+await build();
