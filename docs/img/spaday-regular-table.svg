@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" shape-rendering="geometricPrecision" role="img" aria-label="spaday-regular-table">
+  <title>spaday-regular-table</title>
+  <defs>
+    <clipPath id="viewport-clip">
+      <rect x="124" y="243" width="1006" height="854" rx="62"/>
+    </clipPath>
+    <clipPath id="tabletop-clip">
+      <path d="M627 400 L947 560 L627 720 L307 560 Z"/>
+    </clipPath>
+  </defs>
+
+  <rect x="88" y="96" width="1078" height="1036" rx="108" fill="#0C4253"/>
+  <rect x="124" y="243" width="1006" height="854" rx="62" fill="#F2F3EF"/>
+  <circle cx="208" cy="175" r="25" fill="#FC6B47"/>
+  <circle cx="295" cy="175" r="25" fill="#AECEC3"/>
+  <circle cx="383" cy="175" r="25" fill="#F2F3EF"/>
+
+  <g clip-path="url(#viewport-clip)">
+    <g transform="translate(627 670) scale(1.17) translate(-627 -721)">
+    <g fill="#0C4253">
+      <rect x="345" y="600" width="48" height="270" rx="18"/>
+      <rect x="901" y="600" width="48" height="270" rx="18"/>
+      <rect x="603" y="750" width="48" height="300" rx="18"/>
+    </g>
+    <path d="M307 560 L627 720 L947 560 L947 610 L627 770 L307 610 Z" fill="#0C4253"/>
+
+    <path d="M627 400 L947 560 L627 720 L307 560 Z" fill="#AECEC3"/>
+    <g clip-path="url(#tabletop-clip)">
+      <path d="M627 400 L734 453.3 L414 613.3 L307 560 Z" fill="#FC6B47"/>
+      <g fill="none" stroke="#0C4253" stroke-width="12">
+        <path d="M413.7 453.3 L733.7 613.3"/>
+        <path d="M520.3 506.7 L840.3 666.7"/>
+        <path d="M734 453.3 L414 613.3"/>
+        <path d="M840 506.7 L520 666.7"/>
+      </g>
+    </g>
+    <path d="M627 400 L947 560 L627 720 L307 560 Z" fill="none" stroke="#0C4253" stroke-width="16" stroke-linejoin="round"/>
+
+  </g>
+
+  </g>
+</svg>
