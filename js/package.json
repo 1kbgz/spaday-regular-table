@@ -41,7 +41,7 @@
     "watch": "nodemon --watch src -e ts,css,html --exec \"pnpm build:debug\""
   },
   "dependencies": {
-    "regular-table": "^0.9.0"
+    "regular-table": "=0.9.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.0",

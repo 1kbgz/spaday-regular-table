@@ -205,3 +205,39 @@ test("the material theme follows the wa-dark page mode", async ({ page }) => {
   );
   await expect(inner).toHaveCSS("color", "rgb(102, 102, 102)");
 });
+
+test("survives another bundle registering regular-table first", async ({
+  page,
+}) => {
+  await page.goto("/dist/index.html");
+  const r = await page.evaluate(async () => {
+    // simulate spaday-perspective's viewer-datagrid having won the registration
+    // race for the regular-table engine element
+    const rig = document.createElement("iframe");
+    document.body.appendChild(rig);
+    const win = rig.contentWindow;
+    const errors = [];
+    win.addEventListener("error", (e) => errors.push(String(e.message)));
+    win.customElements.define(
+      "regular-table",
+      class extends win.HTMLElement {},
+    );
+    let imported = true;
+    try {
+      await win.eval(`import("${location.origin}/dist/cdn/index.js")`);
+    } catch (error) {
+      imported = false;
+      errors.push(String(error));
+    }
+    return {
+      imported,
+      wrapperDefined: !!win.customElements.get("spaday-regular-table"),
+      defineRestored: String(win.customElements.define).includes("native code"),
+      errors,
+    };
+  });
+  expect(r.errors).toEqual([]);
+  expect(r.imported).toBe(true); // the bundle no longer dies on the duplicate define
+  expect(r.wrapperDefined).toBe(true);
+  expect(r.defineRestored).toBe(true); // the guard did not leak past the engine import
+});
