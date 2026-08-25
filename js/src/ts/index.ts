@@ -1,5 +1,9 @@
+// the guard must execute before the engine import registers its element
+import { restoreDefine } from "./define-guard";
 import "regular-table";
 import type { RegularTableElement } from "regular-table";
+
+restoreDefine();
 
 type Row = Record<string, unknown>;
 type CellRenderer = {

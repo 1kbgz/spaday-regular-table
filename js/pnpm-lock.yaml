@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       regular-table:
-        specifier: ^0.9.0
+        specifier: '=0.9.0'
         version: 0.9.0
     devDependencies:
       '@playwright/test':
