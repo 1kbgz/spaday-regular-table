@@ -241,15 +241,19 @@
         <article role="main" id="furo-main-content">
           <div class="toctree-wrapper compound">
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="spaday-regular-table">
-<h1>spaday-regular-table<a class="headerlink" href="#spaday-regular-table" title="Link to this heading">¶</a></h1>
+<a href="https://github.com/1kbgz/spaday-regular-table">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/1kbgz/spaday-regular-table/raw/main/docs/img/logo-dark.png?raw=true">
+    <img alt="spaday-regular-table logo, a table with a data-grid top inside a browser window" src="https://github.com/1kbgz/spaday-regular-table/raw/main/docs/img/logo-light.png?raw=true" width="800">
+  </picture>
+</a>
 <p>Viewport-virtualized data tables for spaday, powered by <code class="docutils literal notranslate"><span class="pre">regular-table</span></code>.</p>
 <p><a class="reference external" href="https://github.com/1kbgz/spaday-regular-table/actions/workflows/build.yaml"><img alt="Build Status" src="https://github.com/1kbgz/spaday-regular-table/actions/workflows/build.yaml/badge.svg?branch=main&amp;event=push" /></a>
 <a class="reference external" href="https://codecov.io/gh/1kbgz/spaday-regular-table"><img alt="codecov" src="https://codecov.io/gh/1kbgz/spaday-regular-table/branch/main/graph/badge.svg" /></a>
 <a class="reference external" href="https://github.com/1kbgz/spaday-regular-table"><img alt="License" src="https://img.shields.io/github/license/1kbgz/spaday-regular-table" /></a>
 <a class="reference external" href="https://pypi.python.org/pypi/spaday-regular-table"><img alt="PyPI" src="https://img.shields.io/pypi/v/spaday-regular-table.svg" /></a></p>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<h1>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="docs/src/tutorial.html"><span class="std std-doc">Build a 100,000-row table</span></a> — guided virtual-table example.</p></li>
 <li><p><a class="reference internal" href="docs/src/how-to.html"><span class="std std-doc">Add rich action cells and hot row updates</span></a> — task-focused Python configuration.</p></li>
@@ -258,7 +262,7 @@
 </ul>
 </section>
 <section id="quick-example">
-<h2>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">¶</a></h2>
+<h1>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">¶</a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallEndpoint</span><span class="p">,</span> <span class="n">event_value</span><span class="p">,</span> <span class="n">serve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">spaday_regular_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegularTable</span>
 
@@ -294,7 +298,7 @@ browser methods remain available to integration authors, but applications need n
 <p><code class="docutils literal notranslate"><span class="pre">cell-click</span></code> exposes <code class="docutils literal notranslate"><span class="pre">event.detail</span></code> with <code class="docutils literal notranslate"><span class="pre">type</span></code>, virtual <code class="docutils literal notranslate"><span class="pre">x</span></code>/<code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">column</span></code>, <code class="docutils literal notranslate"><span class="pre">value</span></code>, and the source <code class="docutils literal notranslate"><span class="pre">row</span></code>, so normal spaday actions can handle interactions. <code class="docutils literal notranslate"><span class="pre">virtual_mode</span></code> supports upstream <code class="docutils literal notranslate"><span class="pre">both</span></code>, <code class="docutils literal notranslate"><span class="pre">horizontal</span></code>, <code class="docutils literal notranslate"><span class="pre">vertical</span></code>, and <code class="docutils literal notranslate"><span class="pre">none</span></code>; keep <code class="docutils literal notranslate"><span class="pre">both</span></code> for large datasets.</p>
 </section>
 <section id="run-the-local-example">
-<h2>Run the local example<a class="headerlink" href="#run-the-local-example" title="Link to this heading">¶</a></h2>
+<h1>Run the local example<a class="headerlink" href="#run-the-local-example" title="Link to this heading">¶</a></h1>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[examples]"</span>
 python<span class="w"> </span>-m<span class="w"> </span>spaday_regular_table.example
 </pre></div>
@@ -304,7 +308,6 @@ virtualized rows, a server row stream, full-width sizing, rich cells, and server
 insert, remove, and click operations. All interaction is authored in Python; there is no companion
 <code class="docutils literal notranslate"><span class="pre">example.js</span></code>. It passes the local package descriptor directly, so it does not install or resolve the
 integration from GitHub.</p>
-</section>
 </section>
 
         </article>
