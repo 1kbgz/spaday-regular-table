@@ -1,4 +1,9 @@
-# spaday-regular-table
+<a href="https://github.com/1kbgz/spaday-regular-table">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/1kbgz/spaday-regular-table/raw/main/docs/img/logo-dark.png?raw=true">
+    <img alt="spaday-regular-table logo, a table with a data-grid top inside a browser window" src="https://github.com/1kbgz/spaday-regular-table/raw/main/docs/img/logo-light.png?raw=true" width="800">
+  </picture>
+</a>
 
 Viewport-virtualized data tables for spaday, powered by `regular-table`.
 
