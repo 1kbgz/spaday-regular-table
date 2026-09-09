@@ -286,7 +286,19 @@
 <span class="p">)</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"RegularTable"</span><span class="p">,</span> <span class="s2">"package"</span><span class="p">]</span>
+<span class="c1">#: ``css()`` kwarg → (CSS custom property, what it controls), in the shape of</span>
+<span class="c1">#: :data:`spaday.theme.SHELL_TOKENS`. Each defaults to the shell token it belongs to, so re-theming</span>
+<span class="c1">#: the shell carries the table with it; set these to theme the table alone.</span>
+<span class="n">TOKENS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"spa_regular_table_text"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-text"</span><span class="p">,</span> <span class="s2">"cell text color (defaults to --spa-muted)"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_border"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-border"</span><span class="p">,</span> <span class="s2">"header rule under the last header row (defaults to --spa-border)"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_row_hover"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-row-hover"</span><span class="p">,</span> <span class="s2">"hovered row background (defaults to --spa-surface-2)"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_row_hover_text"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-row-hover-text"</span><span class="p">,</span> <span class="s2">"hovered row text color"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_scrollbar"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-scrollbar"</span><span class="p">,</span> <span class="s2">"scrollbar thumb color"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_scrollbar_hover"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-scrollbar-hover"</span><span class="p">,</span> <span class="s2">"scrollbar thumb color while hovered"</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TOKENS"</span><span class="p">,</span> <span class="s2">"RegularTable"</span><span class="p">,</span> <span class="s2">"package"</span><span class="p">]</span>
 </pre></div>
         </article>
       </div>
@@ -326,8 +338,8 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script data-searchlite-index="searchlite-index.json" defer="defer" src="../_static/searchlite.js?v=43c3c99e"></script>
-    <script data-searchlite-adopt="true" defer="defer" src="../_static/searchlite-ui.js?v=42b9d9bb"></script>
+    <script data-searchlite-index="searchlite-index.json" defer="defer" src="../_static/searchlite.js?v=a5320898"></script>
+    <script data-searchlite-adopt="true" defer="defer" src="../_static/searchlite-ui.js?v=4e4bdd69"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
