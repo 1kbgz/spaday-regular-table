@@ -47,4 +47,16 @@ package = ComponentPackage(
 )
 
 
-__all__ = ["RegularTable", "package"]
+#: ``css()`` kwarg → (CSS custom property, what it controls), in the shape of
+#: :data:`spaday.theme.SHELL_TOKENS`. Each defaults to the shell token it belongs to, so re-theming
+#: the shell carries the table with it; set these to theme the table alone.
+TOKENS = {
+    "spa_regular_table_text": ("--spa-regular-table-text", "cell text color (defaults to --spa-muted)"),
+    "spa_regular_table_border": ("--spa-regular-table-border", "header rule under the last header row (defaults to --spa-border)"),
+    "spa_regular_table_row_hover": ("--spa-regular-table-row-hover", "hovered row background (defaults to --spa-surface-2)"),
+    "spa_regular_table_row_hover_text": ("--spa-regular-table-row-hover-text", "hovered row text color"),
+    "spa_regular_table_scrollbar": ("--spa-regular-table-scrollbar", "scrollbar thumb color"),
+    "spa_regular_table_scrollbar_hover": ("--spa-regular-table-scrollbar-hover", "scrollbar thumb color while hovered"),
+}
+
+__all__ = ["TOKENS", "RegularTable", "package"]
