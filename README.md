@@ -12,6 +12,8 @@ Viewport-virtualized data tables for spaday, powered by `regular-table`.
 [![License](https://img.shields.io/github/license/1kbgz/spaday-regular-table)](https://github.com/1kbgz/spaday-regular-table)
 [![PyPI](https://img.shields.io/pypi/v/spaday-regular-table.svg)](https://pypi.python.org/pypi/spaday-regular-table)
 
+[![Preview of regular-table page](https://raw.githubusercontent.com/1kbgz/spaday-regular-table/main/docs/img/preview.webp)](./spaday_regular_table/example.py)
+
 ## Documentation
 
 - [Build a 100,000-row table](docs/src/tutorial.md) — guided virtual-table example.
@@ -70,3 +72,6 @@ virtualized rows, a server row stream, full-width sizing, rich cells, and server
 insert, remove, and click operations. All interaction is authored in Python; there is no companion
 `example.js`. It passes the local package descriptor directly, so it does not install or resolve the
 integration from GitHub.
+
+> [!NOTE]
+> This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
