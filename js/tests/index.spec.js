@@ -241,3 +241,23 @@ test("survives another bundle registering regular-table first", async ({
   expect(r.wrapperDefined).toBe(true);
   expect(r.defineRestored).toBe(true); // the guard did not leak past the engine import
 });
+
+test("warns, naming what it serves, when another copy registered its elements first", async ({
+  page,
+}) => {
+  // the page keeps the first registration, so the loser says which elements are not its own
+  const warnings = [];
+  page.on("console", (message) => {
+    if (message.type() === "warning") warnings.push(message.text());
+  });
+  await page.addInitScript(() => {
+    customElements.define("regular-table", class extends HTMLElement {});
+  });
+  await page.goto("/dist/index.html");
+  await expect
+    .poll(() => warnings.find((text) => text.includes("<regular-table>")))
+    .toMatch(/ \d+\.\d+\.\d+\S*: another copy on the page already registered /);
+  expect(warnings.find((text) => text.includes("<regular-table>"))).toContain(
+    "regular-table ",
+  );
+});

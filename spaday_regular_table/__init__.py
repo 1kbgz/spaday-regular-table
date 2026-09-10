@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Any
 
@@ -39,11 +40,15 @@ class RegularTable(SpadayRegularTable):
         )
 
 
+# the exact version of each JS library the package serves, written by its JS build
+_VERSIONS = Path(__file__).parent / "extension" / "versions.json"
+
 package = ComponentPackage(
     name="regular-table",
     assets_dir=Path(__file__).parent / "extension",
     assets=(("css", "css/material.css"), ("css", "css/theme.css"), ("js", "cdn/index.js")),
     components=(RegularTable,),
+    provides=json.loads(_VERSIONS.read_text(encoding="utf-8")) if _VERSIONS.exists() else {},
 )
 
 
