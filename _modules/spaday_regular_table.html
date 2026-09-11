@@ -234,7 +234,8 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for spaday_regular_table</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentPackage</span>
@@ -278,11 +279,15 @@
 
 
 
+<span class="c1"># the exact version of each JS library the package serves, written by its JS build</span>
+<span class="n">_VERSIONS</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"extension"</span> <span class="o">/</span> <span class="s2">"versions.json"</span>
+
 <span class="n">package</span> <span class="o">=</span> <span class="n">ComponentPackage</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">"regular-table"</span><span class="p">,</span>
     <span class="n">assets_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"extension"</span><span class="p">,</span>
     <span class="n">assets</span><span class="o">=</span><span class="p">((</span><span class="s2">"css"</span><span class="p">,</span> <span class="s2">"css/material.css"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"css"</span><span class="p">,</span> <span class="s2">"css/theme.css"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"js"</span><span class="p">,</span> <span class="s2">"cdn/index.js"</span><span class="p">)),</span>
     <span class="n">components</span><span class="o">=</span><span class="p">(</span><span class="n">RegularTable</span><span class="p">,),</span>
+    <span class="n">provides</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">_VERSIONS</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">))</span> <span class="k">if</span> <span class="n">_VERSIONS</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="p">{},</span>
 <span class="p">)</span>
 
 
