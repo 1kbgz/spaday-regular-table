@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>spaday-regular-table in Pyodide</title>
+    <link rel="stylesheet" href="./components/regular-table/css/index.css" />
+    <link rel="stylesheet" href="./components/regular-table/css/material.css" />
+    <link rel="stylesheet" href="./components/regular-table/css/theme.css" />
+    <style>
+      #pyodide-status {
+        position: sticky;
+        z-index: 10000;
+        top: 0;
+        box-sizing: border-box;
+        min-height: 3rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #cbd5e1;
+        color: #475569;
+        background: #fffffff2;
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+        backdrop-filter: blur(12px);
+      }
+      #pyodide-error {
+        margin: 1rem;
+        color: #b91c1c;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pyodide-status">Loading Python in the browser…</div>
+    <div id="example-root"></div>
+    <pre id="pyodide-error" hidden></pre>
+    <script type="module">
+      import { init, mount, Store } from "./runtime/spaday/cdn/index.js";
+      import "./components/regular-table/cdn/index.js";
+
+      const status = document.querySelector("#pyodide-status");
+      const pendingEndpoints = new Map();
+      const streamSources = new Set();
+      let nextEndpointId = 0;
+
+      class LocalEventSource extends EventTarget {
+        static CLOSED = 2;
+        static CONNECTING = 0;
+        static OPEN = 1;
+
+        constructor(url) {
+          super();
+          const path = new URL(url, location.href).pathname;
+          if (path !== "/api/table/stream")
+            throw new Error(`unsupported local event stream: ${path}`);
+          this.readyState = LocalEventSource.CONNECTING;
+          this.url = new URL(url, location.href).href;
+          streamSources.add(this);
+          queueMicrotask(() => {
+            this.readyState = LocalEventSource.OPEN;
+            this.dispatchEvent(new Event("open"));
+          });
+        }
+
+        close() {
+          this.readyState = LocalEventSource.CLOSED;
+          streamSources.delete(this);
+        }
+      }
+
+      globalThis.EventSource = LocalEventSource;
+
+      function fail(error) {
+        status.textContent = "Unable to start";
+        const output = document.querySelector("#pyodide-error");
+        output.hidden = false;
+        output.textContent = String(error);
+      }
+
+      try {
+        await init({ module_or_path: "./runtime/spaday/pkg/spaday_bg.wasm" });
+
+        const worker = new Worker("./pyodide-worker.js", { type: "module" });
+        const nativeFetch = globalThis.fetch.bind(globalThis);
+        globalThis.fetch = async (input, options = {}) => {
+          const url = new URL(
+            input instanceof Request ? input.url : input,
+            location.href,
+          );
+          const match = url.pathname.match(
+            /^\/api\/table\/(click|update|insert|remove)$/,
+          );
+          if (!match) return nativeFetch(input, options);
+
+          const id = ++nextEndpointId;
+          const response = new Promise((resolve) => {
+            pendingEndpoints.set(id, resolve);
+          });
+          worker.postMessage({
+            type: "endpoint",
+            id,
+            action: match[1],
+            body: options.body ? JSON.parse(String(options.body)) : null,
+          });
+          return response;
+        };
+
+        worker.addEventListener("message", (event) => {
+          if (event.data.type === "status")
+            status.textContent = event.data.message;
+          if (event.data.type === "error") fail(event.data.message);
+          if (event.data.type === "stream") {
+            for (const patch of event.data.patches) {
+              const message = new MessageEvent("message", {
+                data: JSON.stringify(patch),
+              });
+              for (const source of streamSources) source.dispatchEvent(message);
+            }
+          }
+          if (event.data.type === "endpoint") {
+            const resolve = pendingEndpoints.get(event.data.id);
+            if (resolve) {
+              pendingEndpoints.delete(event.data.id);
+              resolve(
+                new Response(JSON.stringify(event.data.body), {
+                  status: event.data.status,
+                  headers: { "content-type": "application/json" },
+                }),
+              );
+            }
+          }
+          if (event.data.type === "snapshot") {
+            const { tree, style, store: initialStore } = event.data.payload;
+            document.head.insertAdjacentHTML("beforeend", style);
+            const store = new Store(initialStore);
+            mount(document.querySelector("#example-root"), tree, store);
+            window.setInterval(
+              () => worker.postMessage({ type: "flush" }),
+              100,
+            );
+            status.textContent = "Ready · Python model running in this browser";
+            document.documentElement.dataset.ready = "true";
+          }
+        });
+        worker.postMessage({ type: "start" });
+      } catch (error) {
+        fail(error);
+      }
+    </script>
+  </body>
+</html>
