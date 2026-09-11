@@ -250,6 +250,8 @@ styles = """
 </style>
 """
 
+initial_store = {"action_result": {"body": {"message": "Actions round-trip through Python"}}}
+
 app = serve(
     page,
     packages=[package],
@@ -258,7 +260,7 @@ app = serve(
         Route("/api/table/{action}", table_action, methods=["POST"]),
     ],
     background=[stream_rows()],
-    store={"action_result": {"body": {"message": "Actions round-trip through Python"}}},
+    store=initial_store,
     head=styles,
     title="spaday-regular-table example",
 )

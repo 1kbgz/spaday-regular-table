@@ -62,6 +62,8 @@ browser methods remain available to integration authors, but applications need n
 
 ## Run the local example
 
+[Run the complete example in your browser](https://1kbgz.github.io/spaday-regular-table/lite/) — Python runs locally through Pyodide; no install or server required.
+
 ```bash
 python -m pip install -e ".[examples]"
 python -m spaday_regular_table.example
