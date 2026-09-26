@@ -111,7 +111,7 @@ pyodide-example: build  ## build the standalone Pyodide example into dist/lite
 	test -n "$(firstword $(wildcard dist/spaday_regular_table-*.whl))"
 	rm -rf dist/lite dist/pyodide-deps
 	mkdir -p dist/lite dist/pyodide-deps
-	python -m pip download --no-deps --only-binary=:all: --platform pyemscripten_2026_0_wasm32 --python-version 314 --implementation cp --abi cp314 --dest dist/pyodide-deps "spaday==0.8.2"
+	python -m pip download --no-deps --only-binary=:all: --platform pyemscripten_2026_0_wasm32 --python-version 314 --implementation cp --abi cp314 --dest dist/pyodide-deps "spaday==0.11.1"
 	python js/examples/build_pyodide_example.py dist/lite "$(firstword $(wildcard dist/spaday_regular_table-*.whl))" dist/pyodide-deps
 	cp js/examples/pyodide.html dist/lite/index.html
 	cp js/examples/pyodide-worker.js dist/lite/
