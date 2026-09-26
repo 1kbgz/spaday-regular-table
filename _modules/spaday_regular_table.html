@@ -238,7 +238,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentPackage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spaday</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentPackage</span><span class="p">,</span> <span class="n">Token</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">spaday.component</span><span class="w"> </span><span class="kn">import</span> <span class="n">Child</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.components</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpadayRegularTable</span>
@@ -291,16 +291,15 @@
 <span class="p">)</span>
 
 
-<span class="c1">#: ``css()`` kwarg → (CSS custom property, what it controls), in the shape of</span>
-<span class="c1">#: :data:`spaday.theme.SHELL_TOKENS`. Each defaults to the shell token it belongs to, so re-theming</span>
+<span class="c1">#: ``css()`` kwarg → (CSS custom property, what it controls). Each defaults to the shell token it belongs to, so re-theming</span>
 <span class="c1">#: the shell carries the table with it; set these to theme the table alone.</span>
 <span class="n">TOKENS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"spa_regular_table_text"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-text"</span><span class="p">,</span> <span class="s2">"cell text color (defaults to --spa-muted)"</span><span class="p">),</span>
-    <span class="s2">"spa_regular_table_border"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-border"</span><span class="p">,</span> <span class="s2">"header rule under the last header row (defaults to --spa-border)"</span><span class="p">),</span>
-    <span class="s2">"spa_regular_table_row_hover"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-row-hover"</span><span class="p">,</span> <span class="s2">"hovered row background (defaults to --spa-surface-2)"</span><span class="p">),</span>
-    <span class="s2">"spa_regular_table_row_hover_text"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-row-hover-text"</span><span class="p">,</span> <span class="s2">"hovered row text color"</span><span class="p">),</span>
-    <span class="s2">"spa_regular_table_scrollbar"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-scrollbar"</span><span class="p">,</span> <span class="s2">"scrollbar thumb color"</span><span class="p">),</span>
-    <span class="s2">"spa_regular_table_scrollbar_hover"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"--spa-regular-table-scrollbar-hover"</span><span class="p">,</span> <span class="s2">"scrollbar thumb color while hovered"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_text"</span><span class="p">:</span> <span class="n">Token</span><span class="p">(</span><span class="s2">"--spa-regular-table-text"</span><span class="p">,</span> <span class="s2">"cell text color"</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">"--spa-muted"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_border"</span><span class="p">:</span> <span class="n">Token</span><span class="p">(</span><span class="s2">"--spa-regular-table-border"</span><span class="p">,</span> <span class="s2">"header rule under the last header row"</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">"--spa-border"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_row_hover"</span><span class="p">:</span> <span class="n">Token</span><span class="p">(</span><span class="s2">"--spa-regular-table-row-hover"</span><span class="p">,</span> <span class="s2">"hovered row background"</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">"--spa-surface-2"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_row_hover_text"</span><span class="p">:</span> <span class="n">Token</span><span class="p">(</span><span class="s2">"--spa-regular-table-row-hover-text"</span><span class="p">,</span> <span class="s2">"hovered row text color"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_scrollbar"</span><span class="p">:</span> <span class="n">Token</span><span class="p">(</span><span class="s2">"--spa-regular-table-scrollbar"</span><span class="p">,</span> <span class="s2">"scrollbar thumb color"</span><span class="p">),</span>
+    <span class="s2">"spa_regular_table_scrollbar_hover"</span><span class="p">:</span> <span class="n">Token</span><span class="p">(</span><span class="s2">"--spa-regular-table-scrollbar-hover"</span><span class="p">,</span> <span class="s2">"scrollbar thumb color while hovered"</span><span class="p">),</span>
 <span class="p">}</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TOKENS"</span><span class="p">,</span> <span class="s2">"RegularTable"</span><span class="p">,</span> <span class="s2">"package"</span><span class="p">]</span>
