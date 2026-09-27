@@ -11,7 +11,7 @@
 regular-table {
   --_spa-regular-table-text: var(
     --spa-regular-table-text,
-    var(--spa-muted, #666)
+    var(--spa-text, #666)
   );
   --_spa-regular-table-border: var(
     --spa-regular-table-border,
@@ -38,7 +38,7 @@ regular-table {
 :where(.wa-dark) regular-table {
   --_spa-regular-table-text: var(
     --spa-regular-table-text,
-    var(--spa-muted, #9aa3ad)
+    var(--spa-text, #9aa3ad)
   );
   --_spa-regular-table-border: var(
     --spa-regular-table-border,
@@ -65,7 +65,7 @@ regular-table {
 :where(.wa-light) regular-table {
   --_spa-regular-table-text: var(
     --spa-regular-table-text,
-    var(--spa-muted, #666)
+    var(--spa-text, #666)
   );
   --_spa-regular-table-border: var(
     --spa-regular-table-border,

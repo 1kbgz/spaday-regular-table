@@ -186,6 +186,13 @@ test("the material theme follows the wa-dark page mode", async ({ page }) => {
   await expect(th).toBeVisible();
   await expect(th).toHaveCSS("border-bottom-color", "rgb(221, 221, 221)"); // material's light #ddd
   await expect(inner).toHaveCSS("color", "rgb(102, 102, 102)"); // #666
+  await page
+    .locator("spaday-regular-table")
+    .evaluate((table) => table.style.setProperty("--spa-text", "rgb(7, 8, 9)"));
+  await expect(inner).toHaveCSS("color", "rgb(7, 8, 9)");
+  await page
+    .locator("spaday-regular-table")
+    .evaluate((table) => table.style.removeProperty("--spa-text"));
 
   await page.evaluate(() => document.documentElement.classList.add("wa-dark"));
   await expect(th).toHaveCSS("border-bottom-color", "rgb(51, 59, 69)"); // #333b45, the shell's dark border
