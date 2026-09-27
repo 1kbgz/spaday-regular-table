@@ -55,7 +55,7 @@ package = ComponentPackage(
 #: ``css()`` kwarg → (CSS custom property, what it controls). Each defaults to the shell token it belongs to, so re-theming
 #: the shell carries the table with it; set these to theme the table alone.
 TOKENS = {
-    "spa_regular_table_text": Token("--spa-regular-table-text", "cell text color", fallback="--spa-muted"),
+    "spa_regular_table_text": Token("--spa-regular-table-text", "cell text color", fallback="--spa-text"),
     "spa_regular_table_border": Token("--spa-regular-table-border", "header rule under the last header row", fallback="--spa-border"),
     "spa_regular_table_row_hover": Token("--spa-regular-table-row-hover", "hovered row background", fallback="--spa-surface-2"),
     "spa_regular_table_row_hover_text": Token("--spa-regular-table-row-hover-text", "hovered row text color"),
