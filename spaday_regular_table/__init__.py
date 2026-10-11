@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from spaday import ComponentPackage, Token
 from spaday.component import Child
@@ -21,7 +21,7 @@ class RegularTable(SpadayRegularTable):
         rows: Any = None,
         row_patch: Any = None,
         stream_url: str | None = None,
-        virtual_mode: str | None = None,
+        virtual_mode: Literal["both", "horizontal", "vertical", "none"] | None = None,
         row_header: str | None = None,
         row_height: float | None = None,
         **props: Any,

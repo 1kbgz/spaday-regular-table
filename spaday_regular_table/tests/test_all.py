@@ -14,15 +14,16 @@ def _generated_ast(source: str) -> str:
                 node.names = [name for name in node.names if name.name != "Optional"]
             return node
 
-        def visit_Subscript(self, node):
-            node = self.generic_visit(node)
+        def visit_Subscript(self, node: ast.Subscript):
+            self.generic_visit(node)
             if isinstance(node.value, ast.Name) and node.value.id == "Optional":
                 return ast.BinOp(left=node.slice, op=ast.BitOr(), right=ast.Constant(value=None))
             return node
 
-        def visit_Assign(self, node):
-            node = self.generic_visit(node)
+        def visit_Assign(self, node: ast.Assign):
+            self.generic_visit(node)
             if any(isinstance(target, ast.Name) and target.id == "__all__" for target in node.targets):
+                assert isinstance(node.value, ast.List)
                 node.value.elts.sort(key=ast.unparse)
             return node
 
