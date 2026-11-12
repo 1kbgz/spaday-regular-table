@@ -38,8 +38,12 @@ regular-table = "spaday_regular_table:package"
 
 [project.optional-dependencies]
 examples = [
+    "pydantic>=2",
+    "spaday>=0.14,<1",
     "starlette",
+    "transports>=0.12.2,<0.13",
     "uvicorn",
+    "websockets",
 ]
 develop = [
     "build",
@@ -52,14 +56,18 @@ develop = [
     "mdformat",
     "mdformat-myst",
     "mdformat-tables>=1",
+    "pydantic>=2",
     "pytest",
     "pytest-cov",
     "ruff",
+    "spaday>=0.14,<1",
     "starlette",
+    "transports>=0.12.2,<0.13",
     "twine",
     "ty",
     "uv",
     "uvicorn",
+    "websockets",
     "wheel",
 ]
 

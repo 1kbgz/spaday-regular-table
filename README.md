@@ -75,5 +75,17 @@ insert, remove, and click operations. All interaction is authored in Python; the
 `example.js`. It passes the local package descriptor directly, so it does not install or resolve the
 integration from GitHub.
 
+To edit shared records in multiple tabs, run the
+[collaborative example](spaday_regular_table/collaboration.py):
+
+```bash
+python -m spaday_regular_table.collaboration
+```
+
+Open `http://127.0.0.1:8042` and use the Alice, Bob, and Viewer links. Alice and Bob can edit or
+delete records; Viewer receives changes with read-only access. Selection stays local to each tab.
+This example requires Spaday 0.14 and a Python server. See the
+[collaboration recipe](docs/src/how-to.md#edit-shared-records) for bindings, permissions, and reconnect behavior.
+
 > [!NOTE]
 > This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).

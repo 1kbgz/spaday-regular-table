@@ -86,3 +86,40 @@ twice.
 
 See the [complete example](../../spaday_regular_table/example.py) for an SSE broadcaster, toolbar REST
 actions, click logging, styles, and a 100,000-row dataset—all authored in Python.
+
+## Edit shared records
+
+Install the example dependencies and start the [collaborative example](../../spaday_regular_table/collaboration.py):
+
+```bash
+python -m pip install -e ".[examples]"
+python -m spaday_regular_table.collaboration
+```
+
+Open `http://127.0.0.1:8042` as Alice, `/bob` in another tab, and `/viewer` for read-only access.
+Edit a title as Alice and its note as Bob: both fields converge in all three tabs. Select a different
+record as Bob to verify that selection stays local. Delete `docs/README.md` to remove that record
+from every tab while keeping `src/README.md` and its edits.
+
+To adapt this example:
+
+- Keep a stable, unique `id` on each record. Declare `records` as a CRDT keyed set and `details` as a
+  nested map. Set iteration order is not a record identity or a persisted display order.
+- Render editors with `Each(..., field="board.records", key="id")`. Bind inputs to `item("title")`
+  and `item("details.note")` in two-way mode. These writes target the record identity after another
+  record is deleted or the collection order changes.
+- Keep selection in the page's local `store`, outside the `board` wire namespace.
+- Apply deletion on the server using the submitted ID and a fresh CRDT snapshot. Diff that snapshot
+  and pass its operations to `hub.mutate_shared_crdt()`. A repeated deletion returns 404.
+- Grant `WRITE` only to editors on the Hub and check the same role in the HTTP deletion endpoint.
+  Replace URL-selected demo roles with authenticated identities before deployment.
+
+`Wire(reconnect=True)` replays queued field edits after a temporary disconnect. To try this, take
+Alice's tab offline, edit its title, change Bob's note, then reconnect Alice. Both changes should
+appear. Deletion uses an HTTP request and requires a connection; it is not queued offline.
+The example keeps data in memory, so restarting the server resets it.
+
+Bind `RegularTable.rows` to `board.records`. A button cell emits `edit-record`; use
+`SetField("selected", event_value("row.id"))` to open the corresponding editor. This small shared
+collection uses whole `rows` projections for rendering. For large server-owned datasets, keep the
+streamed row-patch approach above.
