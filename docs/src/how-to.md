@@ -125,10 +125,12 @@ collection uses whole `rows` projections for rendering. For large server-owned d
 streamed row-patch approach above.
 
 The people list shows connected users, their selected records, and the title or note field they have
-focused. Viewer appears with read-only activity. Names and colors belong to this example; the demo
+focused. Multiple tabs for the same user share one indicator with a tab count and their activities.
+Viewer appears with read-only activity. Names and colors belong to this example; the demo
 roles still come from its URLs.
 
 The Python page renders the indicators from local `people` state. Its small `collaboration.ts` adapter
 listens for `spaday:wire-client` and uses the existing client's awareness API to publish selection and
-focus. Awareness is separate from CRDT records, clears on disconnect, and republishes on reconnect.
+focus. Awareness is separate from CRDT records, clears on disconnect or page navigation, and
+republishes on reconnect or restoration from the browser’s back/forward cache.
 No additional WebSocket or durable presence fields are needed.
