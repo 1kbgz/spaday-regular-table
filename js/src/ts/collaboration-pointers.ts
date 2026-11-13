@@ -69,24 +69,49 @@ export function connectPointers(
       const x = rect.left + rect.width * p.x;
       const y = rect.top + rect.height * p.y;
       // A virtualized/clipped row must not leave a cursor floating outside its viewport.
-      const hit = document.elementFromPoint(x, y);
-      if (
-        !hit ||
-        !(
-          hit === target.element ||
-          target.element.contains(hit) ||
-          (target.element.getRootNode() instanceof ShadowRoot &&
-            hit === (target.element.getRootNode() as ShadowRoot).host)
-        )
-      )
+      let hit = document.elementFromPoint(x, y);
+      while (hit?.shadowRoot) {
+        const inner = hit.shadowRoot.elementFromPoint(x, y);
+        if (!inner || inner === hit) break;
+        hit = inner;
+      }
+      if (!hit || !(hit === target.element || target.element.contains(hit)))
         return [];
+      let left = Math.max(0, rect.left),
+        top = Math.max(0, rect.top);
+      let right = Math.min(innerWidth, rect.right),
+        bottom = Math.min(innerHeight, rect.bottom);
+      let ancestor: Element | null = target.element;
+      while (ancestor) {
+        const root = ancestor.getRootNode();
+        ancestor =
+          ancestor.parentElement ??
+          (root instanceof ShadowRoot ? root.host : null);
+        if (!ancestor) break;
+        const style = getComputedStyle(ancestor);
+        const clip = ancestor.getBoundingClientRect();
+        if (style.overflowX !== "visible") {
+          left = Math.max(left, clip.left + ancestor.clientLeft);
+          right = Math.min(
+            right,
+            clip.left + ancestor.clientLeft + ancestor.clientWidth,
+          );
+        }
+        if (style.overflowY !== "visible") {
+          top = Math.max(top, clip.top + ancestor.clientTop);
+          bottom = Math.min(
+            bottom,
+            clip.top + ancestor.clientTop + ancestor.clientHeight,
+          );
+        }
+      }
       return [
         {
           peer,
           name: user[0].toUpperCase() + user.slice(1),
           className: `remote-pointer person-${user}`,
           style: `left:${x}px;top:${y}px`,
-          boxStyle: `left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px`,
+          boxStyle: `left:${left}px;top:${top}px;width:${Math.max(0, right - left)}px;height:${Math.max(0, bottom - top)}px`,
         },
       ];
     });
@@ -102,13 +127,24 @@ export function connectPointers(
   };
   const observer = new MutationObserver(schedule);
   const roots = new Set<Node>();
+  const resize = new ResizeObserver(schedule);
+  const resized = new WeakSet<Element>();
   const observe = () => {
+    for (const element of document.querySelectorAll(
+      "main, #people, .workspace",
+    )) {
+      if (!resized.has(element)) {
+        resized.add(element);
+        resize.observe(element);
+      }
+    }
     for (const root of [
       document.querySelector(".workspace"),
       document.querySelector("#records file-tree-container")?.shadowRoot,
     ]) {
       if (!root || roots.has(root)) continue;
       roots.add(root);
+      root.addEventListener("scroll", layout, true);
       observer.observe(root, {
         childList: true,
         subtree: true,
@@ -168,6 +204,9 @@ export function connectPointers(
       clearTimeout(timer);
       cancelAnimationFrame(frame);
       observer.disconnect();
+      resize.disconnect();
+      for (const root of roots)
+        root.removeEventListener("scroll", layout, true);
       document.removeEventListener("pointermove", move);
       document.documentElement.removeEventListener("pointerleave", clear);
       document.removeEventListener("scroll", layout, true);

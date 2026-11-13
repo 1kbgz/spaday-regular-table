@@ -184,6 +184,31 @@ uvicorn.Server(uvicorn.Config(create_app(codec="${codec}"), log_level="error")).
         document.body.style.minHeight = "";
       });
       await expect(aliceCursor).toBeVisible();
+      // A participant joining a wrapped roster moves the workspace under a stationary cursor.
+      await bob.setViewportSize({ width: 800, height: 900 });
+      await bob.addStyleTag({
+        content:
+          "#people { width: 520px; } #people .person { box-sizing: border-box; width: 250px; flex-shrink: 0; }",
+      });
+      await viewer.evaluate(() =>
+        window.dispatchEvent(
+          new PageTransitionEvent("pagehide", { persisted: true }),
+        ),
+      );
+      await expect(bob.locator("#people .person")).toHaveCount(2);
+      await aliceRow.hover();
+      await assertCursorAt(bobRow);
+      const beforeJoin = await bobRow.boundingBox();
+      await viewer.evaluate(() =>
+        window.dispatchEvent(
+          new PageTransitionEvent("pageshow", { persisted: true }),
+        ),
+      );
+      await expect(bob.locator("#people .person")).toHaveCount(3);
+      await expect
+        .poll(async () => (await bobRow.boundingBox()).y)
+        .toBeGreaterThan(beforeJoin.y + 20);
+      await assertCursorAt(bobRow);
       await alice.mouse.move(5, 5);
       await expect(aliceCursor).toHaveCount(0);
       await select(bob, "docs/README.md");
