@@ -23,12 +23,17 @@
             { "name": "cell-click", "type": { "text": "CustomEvent" }, "description": "Clicked cell metadata and source row." },
             { "name": "row-patch", "type": { "text": "CustomEvent" }, "description": "A row patch was applied." },
             { "name": "row-stream-error", "type": { "text": "CustomEvent" }, "description": "An SSE message was not a valid row patch." },
+            { "name": "viewport-change", "type": { "text": "CustomEvent" }, "description": "Visible geometry changed after a draw or internal scroll; coalesced per animation frame." },
             { "name": "table-draw", "type": { "text": "CustomEvent" }, "description": "Fires after each viewport draw so visible cells can be decorated." }
           ],
           "members": [
             { "kind": "method", "name": "updateRow", "description": "Merge fields into one row and redraw the viewport." },
             { "kind": "method", "name": "insertRow", "description": "Insert one row at a virtual index and redraw the viewport." },
             { "kind": "method", "name": "removeRow", "description": "Remove one row at a virtual index and redraw the viewport." },
+            { "kind": "method", "name": "getRowAtPoint", "description": "Return the virtual row index at viewport coordinates, or undefined." },
+            { "kind": "method", "name": "getCellAtPoint", "description": "Return body cell or row-header metadata at viewport coordinates, or undefined." },
+            { "kind": "method", "name": "getRowBounds", "description": "Return full and clipped bounds for a rendered virtual row index, or undefined." },
+            { "kind": "method", "name": "getCellBounds", "description": "Return full and clipped bounds for a rendered virtual row index and column key, or undefined." },
             { "kind": "method", "name": "getMeta", "description": "Resolve a rendered cell to virtual coordinates and its source row." }
           ],
           "slots": []

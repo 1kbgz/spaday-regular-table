@@ -7,24 +7,25 @@ function targets() {
   const key = (record, field = null) => JSON.stringify([record, field]);
   const inputKey = (el) =>
     key(el.closest(".editor").dataset.recordId, el.getAttribute("aria-label"));
-  const rows = () => Array.from(document.querySelectorAll("#records tbody tr"));
-  const rowKey = (el) =>
-    key(
-      document.querySelector("#records").getMeta(el.querySelector("td"))?.row
-        ?.id,
-    );
+  const table = () => document.querySelector("#records");
   return {
     hitTest(x, y) {
       const input = inputs().find((el) => elementGeometry(el).hit(x, y));
       if (input) return inputKey(input);
-      const row = rows().find((el) => elementGeometry(el).hit(x, y));
-      return row ? rowKey(row) : null;
+      const index = table().getRowAtPoint(x, y);
+      return index === undefined ? null : key(table().rows[index].id);
     },
     resolve(id) {
-      const element =
-        inputs().find((el) => inputKey(el) === id) ??
-        rows().find((el) => rowKey(el) === id);
-      return element ? elementGeometry(element) : undefined;
+      const input = inputs().find((el) => inputKey(el) === id);
+      if (input) return elementGeometry(input);
+      const index = table().rows.findIndex((row) => key(row.id) === id);
+      const geometry = table().getRowBounds(index);
+      return (
+        geometry && {
+          ...geometry,
+          hit: (x, y) => table().getRowAtPoint(x, y) === index,
+        }
+      );
     },
     roots: () => [document.querySelector("main")],
   };

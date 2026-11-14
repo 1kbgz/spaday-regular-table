@@ -3,6 +3,8 @@ import { restoreDefine } from "./define-guard";
 import { version } from "regular-table/package.json";
 import "regular-table";
 import type { RegularTableElement } from "regular-table";
+import { itemBounds, type TableItemBounds } from "./geometry.js";
+export type { TableItemBounds } from "./geometry.js";
 
 restoreDefine(`regular-table ${version}`, ["regular-table"]);
 
@@ -44,7 +46,7 @@ type CellMetadata = {
   x?: number;
   y?: number;
 };
-type CellDetail = CellMetadata & {
+export type CellDetail = CellMetadata & {
   column?: string;
   row?: Row;
 };
@@ -104,6 +106,7 @@ export class SpadayRegularTable extends HTMLElement {
   #streamUrl: string | null = null;
   #stream: EventSource | null = null;
   #drawQueued = false;
+  #viewportFrame = 0;
 
   connectedCallback(): void {
     this.style.display ||= "block";
@@ -114,6 +117,8 @@ export class SpadayRegularTable extends HTMLElement {
   }
 
   disconnectedCallback(): void {
+    cancelAnimationFrame(this.#viewportFrame);
+    this.#viewportFrame = 0;
     this.#stream?.close();
     this.#stream = null;
   }
@@ -217,6 +222,84 @@ export class SpadayRegularTable extends HTMLElement {
     };
   }
 
+  /** Hit-test a rendered body cell or row header, including rich-cell shadow content. */
+  getCellAtPoint(x: number, y: number): CellDetail | undefined {
+    if (
+      !this.isConnected ||
+      !this.#table ||
+      !Number.isFinite(x) ||
+      !Number.isFinite(y)
+    )
+      return undefined;
+    let hit = document.elementFromPoint(x, y);
+    while (hit?.shadowRoot) {
+      const inner = hit.shadowRoot.elementFromPoint(x, y);
+      if (!inner || inner === hit) break;
+      hit = inner;
+    }
+    while (hit) {
+      const cell = hit.closest("td,th");
+      if (
+        cell instanceof HTMLElement &&
+        cell.closest("regular-table") === this.#table
+      ) {
+        const meta = this.getMeta(cell);
+        return meta?.y !== undefined ? meta : undefined;
+      }
+      const root = hit.getRootNode();
+      hit = root instanceof ShadowRoot ? root.host : null;
+    }
+    return undefined;
+  }
+
+  /** Return the virtual row index at viewport coordinates; never selects or scrolls. */
+  getRowAtPoint(x: number, y: number): number | undefined {
+    return this.getCellAtPoint(x, y)?.y;
+  }
+
+  /** Bounds of a currently rendered row, clipped against ancestors and the viewport. */
+  getRowBounds(index: number): TableItemBounds | undefined {
+    const cell = this.#renderedCell(index);
+    const row = cell?.closest("tr");
+    return row ? itemBounds(row) : undefined;
+  }
+
+  /** Bounds of a rendered data cell, addressed by virtual row index and column key. */
+  getCellBounds(index: number, column: string): TableItemBounds | undefined {
+    const cell = this.#renderedCell(index, column);
+    return cell ? itemBounds(cell) : undefined;
+  }
+
+  #renderedCell(index: number, column?: string): HTMLElement | undefined {
+    if (
+      !this.isConnected ||
+      !this.#table ||
+      !Number.isInteger(index) ||
+      index < 0 ||
+      index >= this.#rows.length
+    )
+      return undefined;
+    for (const cell of this.#table.querySelectorAll<HTMLElement>(
+      "tbody td, tbody th",
+    )) {
+      const meta = this.getMeta(cell);
+      if (meta?.y === index && (column === undefined || meta.column === column))
+        return cell;
+    }
+    return undefined;
+  }
+
+  #scheduleViewportChange(): void {
+    if (!this.isConnected || this.#viewportFrame) return;
+    this.#viewportFrame = requestAnimationFrame(() => {
+      this.#viewportFrame = 0;
+      if (this.isConnected)
+        this.dispatchEvent(
+          new CustomEvent("viewport-change", { bubbles: true, composed: true }),
+        );
+    });
+  }
+
   get columns(): Column[] {
     return this.#columns;
   }
@@ -282,8 +365,14 @@ export class SpadayRegularTable extends HTMLElement {
     if (this.#table) return;
     this.#table = document.createElement("regular-table");
     this.#table.addEventListener("click", (event) => this.#emitCell(event));
+    this.#table.addEventListener(
+      "scroll",
+      () => this.#scheduleViewportChange(),
+      true,
+    );
     this.#table.addStyleListener(() => {
       this.#renderCells();
+      this.#scheduleViewportChange();
       this.dispatchEvent(
         new CustomEvent("table-draw", {
           bubbles: true,
