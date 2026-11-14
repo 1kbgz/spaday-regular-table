@@ -145,3 +145,10 @@ keyboard focus is still shown in the people list.
 ## Shared pointer display
 
 The collaboration example uses [spaday-collab](https://github.com/1kbgz/spaday-collab) for pointer tracking and hover outlines. Install the `examples` extra to include it. Its adapter in `js/examples/collaboration.js` supplies component identity and geometry; names, colors, roles, and tab grouping remain example settings. Ordinary component use does not require spaday-collab.
+
+Use `getRowAtPoint(x, y)` to map a viewport position to `table.rows[index].id`. To display a remote
+record target, find its current index in `table.rows`, then call `getRowBounds(index)`. For cell
+positions, use `getCellAtPoint(x, y)` and `getCellBounds(index, columnKey)`. Return no geometry when
+the record is absent or not visible. Listen for `viewport-change` to refresh positions after a draw
+or internal scroll. The example uses these public methods; its adapter does not inspect the table's
+rendered DOM.

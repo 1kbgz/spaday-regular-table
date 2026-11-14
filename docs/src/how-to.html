@@ -266,6 +266,12 @@ keyboard focus is still shown in the people list.</p>
 <section id="shared-pointer-display">
 <h2>Shared pointer display<a class="headerlink" href="#shared-pointer-display" title="Link to this heading">¶</a></h2>
 <p>The collaboration example uses <a class="reference external" href="https://github.com/1kbgz/spaday-collab">spaday-collab</a> for pointer tracking and hover outlines. Install the <code class="docutils literal notranslate"><span class="pre">examples</span></code> extra to include it. Its adapter in <code class="docutils literal notranslate"><span class="pre">js/examples/collaboration.js</span></code> supplies component identity and geometry; names, colors, roles, and tab grouping remain example settings. Ordinary component use does not require spaday-collab.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">getRowAtPoint(x,</span> <span class="pre">y)</span></code> to map a viewport position to <code class="docutils literal notranslate"><span class="pre">table.rows[index].id</span></code>. To display a remote
+record target, find its current index in <code class="docutils literal notranslate"><span class="pre">table.rows</span></code>, then call <code class="docutils literal notranslate"><span class="pre">getRowBounds(index)</span></code>. For cell
+positions, use <code class="docutils literal notranslate"><span class="pre">getCellAtPoint(x,</span> <span class="pre">y)</span></code> and <code class="docutils literal notranslate"><span class="pre">getCellBounds(index,</span> <span class="pre">columnKey)</span></code>. Return no geometry when
+the record is absent or not visible. Listen for <code class="docutils literal notranslate"><span class="pre">viewport-change</span></code> to refresh positions after a draw
+or internal scroll. The example uses these public methods; its adapter does not inspect the table’s
+rendered DOM.</p>
 </section>
 </section>
 

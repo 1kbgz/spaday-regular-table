@@ -234,10 +234,34 @@
 <td><p>metadata or <code class="docutils literal notranslate"><span class="pre">undefined</span></code></p></td>
 <td><p>Resolves a rendered cell or descendant.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getCellAtPoint(x,</span> <span class="pre">y)</span></code></p></td>
+<td><p>metadata or <code class="docutils literal notranslate"><span class="pre">undefined</span></code></p></td>
+<td><p>Hit-tests a body cell or row header at viewport coordinates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getRowAtPoint(x,</span> <span class="pre">y)</span></code></p></td>
+<td><p>number or <code class="docutils literal notranslate"><span class="pre">undefined</span></code></p></td>
+<td><p>Returns the virtual row index at viewport coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getRowBounds(index)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TableItemBounds</span></code> or <code class="docutils literal notranslate"><span class="pre">undefined</span></code></p></td>
+<td><p>Returns geometry for a rendered row.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getCellBounds(index,</span> <span class="pre">column)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TableItemBounds</span></code> or <code class="docutils literal notranslate"><span class="pre">undefined</span></code></p></td>
+<td><p>Returns geometry for a rendered data cell by column key.</p></td>
+</tr>
 </tbody>
 </table>
 <p>Mutation methods return <code class="docutils literal notranslate"><span class="pre">false</span></code> or <code class="docutils literal notranslate"><span class="pre">undefined</span></code> for a non-integer or out-of-range index. Successful
 mutations schedule one animation-frame-coalesced viewport redraw.</p>
+<p>Geometry queries never select, scroll, or render missing rows. They return <code class="docutils literal notranslate"><span class="pre">undefined</span></code> for invalid
+indices, missing columns, disconnected tables, and items outside the rendered or visible viewport.
+Hit-testing follows rich-cell shadow content and rejects column headers and covered cells.</p>
+<p><code class="docutils literal notranslate"><span class="pre">TableItemBounds</span></code> contains <code class="docutils literal notranslate"><span class="pre">bounds</span></code> (the full rendered rectangle) and <code class="docutils literal notranslate"><span class="pre">visibleBounds</span></code> (clipped against
+the browser viewport and ancestors with non-visible overflow), both in viewport coordinates. Bounds
+do not account for unrelated elements covering the table; use hit-testing to check a particular point.
+Virtual row indices refer to the current <code class="docutils literal notranslate"><span class="pre">rows</span></code> array. Map indices to stable record IDs in application
+code when sharing positions across clients with different row ordering.</p>
 </section>
 <section id="cell-descriptors">
 <h2>Cell descriptors<a class="headerlink" href="#cell-descriptors" title="Link to this heading">¶</a></h2>
@@ -316,6 +340,9 @@ the same no-op behavior as the matching browser method.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cell-click</span></code> detail contains <code class="docutils literal notranslate"><span class="pre">type</span></code>, virtual <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">column</span></code>, <code class="docutils literal notranslate"><span class="pre">value</span></code>, and <code class="docutils literal notranslate"><span class="pre">row</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">table-draw</span></code> fires after cell descriptors have been applied to every rendered viewport, including user
 scrolling. It has no detail; the event listener’s current target is the <code class="docutils literal notranslate"><span class="pre">RegularTable</span></code> element.</p>
+<p><code class="docutils literal notranslate"><span class="pre">viewport-change</span></code> bubbles and crosses shadow boundaries after table draws and internal scrolling.
+Notifications are coalesced per animation frame and stop while the table is disconnected. Re-query
+geometry when it fires. For external layout changes, also observe ancestor scrolling and resizing.</p>
 </section>
 <section id="cell-values">
 <h2>Cell values<a class="headerlink" href="#cell-values" title="Link to this heading">¶</a></h2>
