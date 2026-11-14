@@ -34,7 +34,7 @@ class SpadayRegularTable(Component):
             ),
             PropertySchema(name="rowHeight", kind="number", choices=(), default=None, description="Optional fixed row height in pixels."),
         ),
-        events=("cell-click", "row-patch", "row-stream-error", "table-draw"),
+        events=("cell-click", "row-patch", "row-stream-error", "viewport-change", "table-draw"),
         slots=(),
     )
 
